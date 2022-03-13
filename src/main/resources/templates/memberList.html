@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/v/dt/dt-1.11.5/sl-1.3.4/datatables.min.css" />
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/sl-1.3.4/datatables.min.js"></script>
+</head>
+
+<body>
+    <table id="userList">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>이름</th>
+                <th>버튼</th>
+            </tr>
+        </thead>
+    </table>
+    <script>
+        var table = $("#userList").DataTable({
+            "columns": [
+                { data: 'id' },
+                { data: 'name' },
+                {
+                    title: '테스트버튼',
+                    data: "SEQ",
+                    render: function(data) {
+                        return '<button>테스트버튼</button>';
+                    }
+                }
+            ],
+            "processing": true,
+            "serverSide": true,
+            "select": true,
+            "ajax": {
+                url: "/member/list",
+                dataSrc: "memberList.content",
+            },
+        });
+
+        // http://live.datatables.net/xijecupo/1/edit
+        table.on('select', function (e, dt, type, indexes) {
+            if (type === 'row') {
+                var data = table.rows(indexes).data().pluck('id');
+
+                console.log(data);
+            }
+        });
+    </script>
+</body>
+
+</html>
